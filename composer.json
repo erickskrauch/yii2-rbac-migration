@@ -1,0 +1,34 @@
+{
+    "name": "erickskrauch/yii2-rbac-migration",
+    "description": "",
+    "keywords": ["yii2", "rbac", "migration", "console"],
+    "homepage": "https://github.com/erickskrauch/yii2-rbac-migration",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "ErickSkrauch",
+            "email": "erickskrauch@ely.by"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8 || ~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ErickSkrauch\\Yii2\\": "src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
