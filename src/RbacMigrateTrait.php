@@ -3,6 +3,11 @@ namespace ErickSkrauch\Yii2;
 
 use yii\helpers\Console;
 
+/**
+ * RbacMigrateTrait contains shortcut methods to build and morph structure of Yii2 RBAC.
+ *
+ * @author ErickSkrauch <erickskrauch@ely.by>
+ */
 trait RbacMigrateTrait
 {
     /**
@@ -11,8 +16,10 @@ trait RbacMigrateTrait
     protected abstract function getAuthManager();
 
     /**
-     * @param string $name
-     * @param string|null $description
+     * Create new permission, add it to authManager and return builder object
+     * @param string $name new permission name
+     * @param string|null $description optional description, which will be passed to created permission item
+     * @throws \Exception if data validation or saving fails (such as the name of the role or permission is not unique)
      * @return ItemBuilder
      */
     public function createPermission($name, $description = null)
@@ -26,8 +33,10 @@ trait RbacMigrateTrait
     }
 
     /**
-     * @param string $name
-     * @param string|null $description
+     * Create new role, add it to authManager and return builder object
+     * @param string $name new role name
+     * @param string|null $description optional description, which will be passed to created role item
+     * @throws \Exception if data validation or saving fails (such as the name of the role or permission is not unique)
      * @return ItemBuilder
      */
     public function createRole($name, $description = null)
@@ -40,6 +49,10 @@ trait RbacMigrateTrait
         return new ItemBuilder($this->getAuthManager(), $role);
     }
 
+    /**
+     * Remove permission by passed name
+     * @param string $name name of removing permission
+     */
     public function removePermission($name)
     {
         $this->begin("remove permission $name");
@@ -47,9 +60,13 @@ trait RbacMigrateTrait
         $this->done();
     }
 
+    /**
+     * Remove role by passed name
+     * @param string $name name of removing role
+     */
     public function removeRole($name)
     {
-        $this->begin("remove permission $name");
+        $this->begin("remove role $name");
         $this->removeItem('getPermission', $name);
         $this->done();
     }
@@ -58,7 +75,7 @@ trait RbacMigrateTrait
      * @param string $method
      * @param string $name
      * @param string|null $description
-     *
+     * @throws \Exception if data validation or saving fails (such as the name of the role or permission is not unique)
      * @return \yii\rbac\Permission|\yii\rbac\Rule
      */
     private function createItem($method, $name, $description = null)
@@ -93,5 +110,4 @@ trait RbacMigrateTrait
     {
         Console::output(' done (time: ' . sprintf('%.3f', microtime(true) - $this->beginTime) . 's)');
     }
-
 }

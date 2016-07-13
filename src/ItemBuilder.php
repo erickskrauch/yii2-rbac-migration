@@ -41,6 +41,7 @@ class ItemBuilder
     }
 
     /**
+     * Add child permission by passed permission object or it's name
      * @param string|Permission $permission
      * @return static
      */
@@ -53,6 +54,7 @@ class ItemBuilder
     }
 
     /**
+     * Add child role by passed role object or it's name
      * @param string|Role $role
      * @return static
      */
@@ -89,7 +91,7 @@ class ItemBuilder
     }
 
     /**
-     * @param string|Permission $permission
+     * @param string|Permission $permission permission item object or it's name
      * @return Permission
      */
     protected function findPermission($permission)
@@ -102,7 +104,7 @@ class ItemBuilder
     }
 
     /**
-     * @param string|Role $role
+     * @param string|Role $role role item object or it's name
      * @return Role
      */
     protected function findRole($role)
@@ -113,5 +115,4 @@ class ItemBuilder
 
         return $this->authManager->getRole($role);
     }
-
 }
