@@ -71,6 +71,16 @@ trait RbacMigrateTrait
         $this->done();
     }
 
+    public function initRbacStructure()
+    {
+        $this->createBaseMigrationClass()->up();
+    }
+
+    public function rollbackRbacStructure()
+    {
+        $this->createBaseMigrationClass()->down();
+    }
+
     /**
      * @param string $method
      * @param string $name
@@ -96,6 +106,15 @@ trait RbacMigrateTrait
         /** @var \yii\rbac\Permission|\yii\rbac\Rule $item */
         $item = $this->getAuthManager()->$method($name);
         $this->getAuthManager()->remove($item);
+    }
+
+    private function createBaseMigrationClass()
+    {
+        if (!class_exists('m140506_102106_rbac_init')) {
+            include \Yii::getAlias('@yii/rbac/migrations/m140506_102106_rbac_init.php');
+        }
+
+        return new \m140506_102106_rbac_init();
     }
 
     private $beginTime;
