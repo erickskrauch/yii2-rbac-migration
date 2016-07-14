@@ -120,11 +120,11 @@ trait RbacMigrateTrait
 
     private function createBaseMigrationClass()
     {
-        if (!class_exists('m140506_102106_rbac_init')) {
-            include \Yii::getAlias('@yii/rbac/migrations/m140506_102106_rbac_init.php');
+        if (!class_exists('rbac_init_migration')) {
+            include __DIR__ . DIRECTORY_SEPARATOR . 'rbac_init_migration.php';
         }
 
-        return new \m140506_102106_rbac_init();
+        return new \rbac_init_migration(['authManager' => $this->getAuthManager()]);
     }
 
     private $beginTime;
