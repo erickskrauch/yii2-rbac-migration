@@ -56,7 +56,7 @@ trait RbacMigrateTrait
     public function removePermission($name)
     {
         $this->begin("remove permission $name");
-        $this->removeItem('getRole', $name);
+        $this->removeItem('getPermission', $name);
         $this->done();
     }
 
@@ -67,7 +67,7 @@ trait RbacMigrateTrait
     public function removeRole($name)
     {
         $this->begin("remove role $name");
-        $this->removeItem('getPermission', $name);
+        $this->removeItem('getRole', $name);
         $this->done();
     }
 
