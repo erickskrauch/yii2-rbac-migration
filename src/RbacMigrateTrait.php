@@ -50,6 +50,36 @@ trait RbacMigrateTrait
     }
 
     /**
+     * Method allows you to change signature of exists permission. If $newDescription passed
+     * as (bool)false, then description will not be changed.
+     * @see updateItem
+     * @param string $oldName
+     * @param string $newName
+     * @param string|bool|null $newDescription
+     */
+    public function updatePermission($oldName, $newName, $newDescription = false)
+    {
+        $this->begin("update permission $oldName");
+        $this->updateItem('getPermission', $oldName, $newName, $newDescription);
+        $this->done();
+    }
+
+    /**
+     * Method allows you to change signature of exists role. If $newDescription passed
+     * as (bool)false, then description will not be changed.
+     * @see updateItem
+     * @param string $oldName
+     * @param string $newName
+     * @param string|bool|null $newDescription
+     */
+    public function updateRole($oldName, $newName, $newDescription = false)
+    {
+        $this->begin("update role $oldName");
+        $this->updateItem('getRole', $oldName, $newName, $newDescription);
+        $this->done();
+    }
+
+    /**
      * Remove permission by passed name
      * @param string $name name of removing permission
      */
@@ -107,6 +137,28 @@ trait RbacMigrateTrait
         }
 
         $this->getAuthManager()->add($item);
+
+        return $item;
+    }
+
+    /**
+     * @param string $method
+     * @param string $oldName
+     * @param string $newName
+     * @param string|null|bool $newDescription
+     * @throws \Exception if data validation or saving fails (such as the name of the role or permission is not unique)
+     * @return \yii\rbac\Permission|\yii\rbac\Rule
+     */
+    private function updateItem($method, $oldName, $newName, $newDescription)
+    {
+        /** @var \yii\rbac\Permission|\yii\rbac\Rule $item */
+        $item = $this->getAuthManager()->$method($oldName);
+        $item->name = $newName;
+        if ($newDescription !== false) {
+            $item->description = $newDescription;
+        }
+
+        $this->getAuthManager()->update($oldName, $item);
 
         return $item;
     }
