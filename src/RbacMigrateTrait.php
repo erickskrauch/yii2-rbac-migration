@@ -71,11 +71,21 @@ trait RbacMigrateTrait
         $this->done();
     }
 
+    /**
+     * Initialize RBAC structure. This is alternative to execute
+     * yii migrate --migrationPath=@yii/rbac/migrations/
+     * from console
+     */
     public function initRbacStructure()
     {
         $this->createBaseMigrationClass()->up();
     }
 
+    /**
+     * Call down method of RBAC migration. This is alternative to execute
+     * yii migrate/down --migrationPath=@yii/rbac/migrations/
+     * from console
+     */
     public function rollbackRbacStructure()
     {
         $this->createBaseMigrationClass()->down();
