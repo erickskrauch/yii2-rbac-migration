@@ -29,7 +29,7 @@ trait RbacMigrateTrait
         $permission = $this->createItem('createPermission', $name, $description);
         $this->done();
 
-        return new ItemBuilder($this->getAuthManager(), $permission);
+        return $this->getPermission($permission->name);
     }
 
     /**
@@ -46,7 +46,7 @@ trait RbacMigrateTrait
         $role = $this->createItem('createRole', $name, $description);
         $this->done();
 
-        return new ItemBuilder($this->getAuthManager(), $role);
+        return $this->getRole($role->name);
     }
 
     /**
@@ -99,6 +99,26 @@ trait RbacMigrateTrait
         $this->begin("remove role $name");
         $this->removeItem('getRole', $name);
         $this->done();
+    }
+
+    /**
+     * Return ItemBuilder object for passed role name
+     * @param string $role
+     * @return ItemBuilder
+     */
+    public function getRole($role)
+    {
+        return new ItemBuilder($this->getAuthManager(), $this->getAuthManager()->getRole($role));
+    }
+
+    /**
+     * Return ItemBuilder object for passed permission name
+     * @param string $permission
+     * @return ItemBuilder
+     */
+    public function getPermission($permission)
+    {
+        return new ItemBuilder($this->getAuthManager(), $this->getAuthManager()->getPermission($permission));
     }
 
     /**
