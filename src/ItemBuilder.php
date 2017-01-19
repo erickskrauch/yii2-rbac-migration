@@ -67,6 +67,7 @@ class ItemBuilder
     }
 
     /**
+     * Remove child permission by passed permission object or it's name
      * @param string|Permission $permission
      * @return static
      */
@@ -79,6 +80,7 @@ class ItemBuilder
     }
 
     /**
+     * Remove child role by passed role object or it's name
      * @param string|Role $role
      * @return static
      */
