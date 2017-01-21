@@ -8,8 +8,8 @@ Simple and useful extension for migrations in Yii2. It allows you to perform ope
 directly within the database migrations. This can be useful if you assign the Roles and Permissions for users in the
 application and not during the generation of RBAC.
 
-Extension allows you to create, update and remove Roles and Permissions, and also contains useful builder to easy roles
-creation.
+Extension allows you to create, update and remove Roles, Permissions and Rules, and also contains useful builder to
+easy roles creation.
 
 **A warning**: if you using constants for Roles, Permissions or Rules names, you should not to use it inside migration classes!
 Use simple strings with it names. Constants values during application development can change, but you old migrations
@@ -129,57 +129,75 @@ public function safeDown()
 
 ### RbacMigrateTrait
 
-#### createPermission($name, $description = null) : ItemBuilder
+#### createPermission($name, $description = null, $ruleName = null): ItemBuilder
 
 Create new permission, add it to authManager and return [ItemBuilder](#itembuilder) object.
 
-#### createRole($name, $description = null) : ItemBuilder
+#### createRole($name, $description = null): ItemBuilder
 
 Create new role, add it to authManager and return [ItemBuilder](#itembuilder) object.
 
-#### updatePermission($oldName, $newName, $newDescription = false) : void
+#### addRule($className, $name): void
+
+Add new rule to auth manager. If class no more exists by provided $className, then it will be created and added
+to authManager, so you old migrations will not fail if you change or delete original rule.
+
+#### updatePermission($oldName, $newName, $newDescription = false, $newRule = false): void
 
 Method allows you to change signature of exists permission. If `$newDescription` passed as (bool)false, then description
-will not be changed.
+will not be changed. The same behavior with $newRule.
 
-#### updateRole($oldName, $newName, $newDescription = false) : void
+#### updateRole($oldName, $newName, $newDescription = false): void
 
 Method allows you to change signature of exists role. If `$newDescription` passed as (bool)false, then description
 will not be changed.
 
-#### removePermission($name) : void
+#### removePermission($name): void
 
 Remove permission by passed name.
 
-#### removeRole($name) : void
+#### removeRole($name): void
 
 Remove role by passed name.
 
-#### initRbacStructure() : void
+#### removeRule($name): void
+
+Removing rule from auth manager. If class no more exists by provided $name, then it will be created and removed
+from authManager, so you old migrations will not fail if you change or delete original rule
+
+#### getRole($role): ItemBuilder
+
+Return [ItemBuilder](#itembuilder) object for passed role name.
+
+#### getPermission($permission): ItemBuilder
+
+Return [ItemBuilder](#itembuilder) object for passed permission name.
+
+#### initRbacStructure(): void
 
 Initialize RBAC structure. This is alternative to execute `yii migrate --migrationPath=@yii/rbac/migrations/`
 from console
 
-#### rollbackRbacStructure() : void
+#### rollbackRbacStructure(): void
 
 Call down method of RBAC migration. This is alternative to execute
 `yii migrate/down --migrationPath=@yii/rbac/migrations/` from console
 
 ### ItemBuilder
 
-#### addPermission($permission) : ItemBuilder
+#### addPermission($permission): ItemBuilder
 
 Add child permission by passed permission object or it's name. `$this` will be returned.
 
-#### addRole($role) : ItemBuilder
+#### addRole($role): ItemBuilder
 
 Add child role by passed role object or it's name. `$this` will be returned.
 
-#### removePermission($permission) : ItemBuilder
+#### removePermission($permission): ItemBuilder
 
 Remove child permission by passed permission object or it's name. `$this` will be returned.
 
-#### removeRole($role) : ItemBuilder
+#### removeRole($role): ItemBuilder
 
 Remove child role by passed role object or it's name. `$this` will be returned.
 
