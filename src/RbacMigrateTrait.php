@@ -1,7 +1,6 @@
 <?php
 namespace ErickSkrauch\Yii2;
 
-use yii\base\UnknownClassException;
 use yii\db\Query;
 use yii\helpers\Console;
 
@@ -260,12 +259,8 @@ trait RbacMigrateTrait
 
     private function ensureRuleClassExists($className, $name)
     {
-        try {
-            if (class_exists($className, true)) {
-                return;
-            }
-        } catch (UnknownClassException $e) {
-            // fine, we are working on
+        if (class_exists($className, true)) {
+            return;
         }
 
         $class = substr(strrchr($className, '\\'), 1);
