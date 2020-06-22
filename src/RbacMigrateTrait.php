@@ -261,8 +261,9 @@ trait RbacMigrateTrait
     private function ensureRuleClassExists($className, $name)
     {
         try {
-            class_exists($className, true);
-            return;
+            if (class_exists($className, true)) {
+                return;
+            }
         } catch (UnknownClassException $e) {
             // fine, we are working on
         }
